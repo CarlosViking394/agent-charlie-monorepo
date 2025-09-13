@@ -1,0 +1,7 @@
+tunnel: 61e42cbe-012a-45c9-841b-a95d6a9c0478
+credentials-file: /Users/LocalAdmin/.cloudflared/61e42cbe-012a-45c9-841b-a95d6a9c0478.json
+
+ingress:
+  - hostname: n8n.agentcharlie.live
+    service: http://localhost:5678
+  - service: http_status:404

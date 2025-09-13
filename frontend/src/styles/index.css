@@ -1,0 +1,485 @@
+@import './tokens.css';
+@import './liquid-glass.css';
+
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-base);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Create depth with layered background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, var(--color-azure-100) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, var(--color-orchid-100) 0%, transparent 50%),
+    radial-gradient(circle at 40% 90%, var(--color-lime-50) 0%, transparent 30%);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Subtle animated gradient overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: 
+    linear-gradient(
+      45deg,
+      rgba(14, 165, 233, 0.03) 0%,
+      rgba(217, 70, 239, 0.02) 25%,
+      rgba(132, 204, 22, 0.01) 50%,
+      rgba(245, 158, 11, 0.02) 75%,
+      rgba(14, 165, 233, 0.03) 100%
+    );
+  animation: slow-drift 60s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+@keyframes slow-drift {
+  0% {
+    transform: translate(-25%, -25%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-25%, -25%) rotate(360deg);
+  }
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+}
+
+h2 {
+  font-size: var(--font-size-3xl);
+}
+
+h3 {
+  font-size: var(--font-size-2xl);
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+}
+
+p {
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Link styles */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* Focus styles */
+*:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Selection styles */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-slate-100);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-300);
+  border-radius: var(--radius-full);
+  transition: background var(--duration-normal) var(--ease-out);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate-400);
+}
+
+/* Utility classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.container--narrow {
+  max-width: 800px;
+}
+
+.container--wide {
+  max-width: 1400px;
+}
+
+/* Layout utilities */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: var(--space-2);
+}
+
+.gap-4 {
+  gap: var(--space-4);
+}
+
+.gap-6 {
+  gap: var(--space-6);
+}
+
+.gap-8 {
+  gap: var(--space-8);
+}
+
+/* Spacing utilities */
+.p-4 {
+  padding: var(--space-4);
+}
+
+.p-6 {
+  padding: var(--space-6);
+}
+
+.p-8 {
+  padding: var(--space-8);
+}
+
+.px-4 {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+.px-6 {
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+.py-4 {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.py-6 {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+
+.mb-6 {
+  margin-bottom: var(--space-6);
+}
+
+.mb-8 {
+  margin-bottom: var(--space-8);
+}
+
+/* Text utilities */
+.text-center {
+  text-align: center;
+}
+
+.text-lg {
+  font-size: var(--font-size-lg);
+}
+
+.text-xl {
+  font-size: var(--font-size-xl);
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Responsive utilities */
+.hidden-mobile {
+  display: block;
+}
+
+.visible-mobile {
+  display: none;
+}
+
+/* Grid utilities */
+.grid-cols-auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid-cols-auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/* Responsive text sizes */
+.text-responsive-4xl {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.text-responsive-3xl {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+}
+
+.text-responsive-2xl {
+  font-size: clamp(1.25rem, 2.5vw, 1.875rem);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-4);
+  }
+  
+  .container--mobile-tight {
+    padding: 0 var(--space-3);
+  }
+  
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .hidden-mobile {
+    display: none !important;
+  }
+  
+  .visible-mobile {
+    display: block !important;
+  }
+  
+  .visible-mobile-flex {
+    display: flex !important;
+  }
+  
+  /* Glass panels on mobile */
+  .glass-panel {
+    border-radius: var(--radius-lg);
+    margin: 0 var(--space-2);
+  }
+  
+  .glass-panel--mobile-full {
+    margin: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  /* Touch-friendly buttons on mobile */
+  .glass-button {
+    min-height: 44px;
+    padding: var(--space-3) var(--space-4);
+  }
+  
+  .glass-pill {
+    min-height: 36px;
+    padding: var(--space-2) var(--space-4);
+  }
+  
+  /* Responsive grid breakdowns */
+  .grid-cols-1-md-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-cols-1-md-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-cols-2-md-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Stack flex on mobile */
+  .flex-col-mobile {
+    flex-direction: column;
+  }
+  
+  .gap-2-mobile {
+    gap: var(--space-2);
+  }
+  
+  .gap-4-mobile {
+    gap: var(--space-4);
+  }
+  
+  /* Text sizing */
+  .text-sm-mobile {
+    font-size: var(--font-size-sm);
+  }
+  
+  .text-xs-mobile {
+    font-size: var(--font-size-xs);
+  }
+  
+  /* Spacing adjustments */
+  .p-4-mobile {
+    padding: var(--space-4);
+  }
+  
+  .p-6-mobile {
+    padding: var(--space-6);
+  }
+  
+  .py-8-mobile {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-3);
+  }
+  
+  .glass-panel {
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+  }
+  
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .text-responsive-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-responsive-3xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-responsive-2xl {
+    font-size: 1.25rem;
+  }
+  
+  /* Single column layouts on small mobile */
+  .grid-cols-auto-fit,
+  .grid-cols-auto-fill,
+  .grid-cols-1-md-2,
+  .grid-cols-1-md-3,
+  .grid-cols-2-md-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Reduce glass effects on very small screens for performance */
+  .glass-panel {
+    backdrop-filter: blur(8px) var(--glass-saturate);
+  }
+  
+  /* Better touch targets */
+  .glass-button,
+  .glass-pill {
+    min-height: 48px;
+  }
+}

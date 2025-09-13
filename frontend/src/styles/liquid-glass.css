@@ -1,0 +1,280 @@
+/* Liquid Glass Components */
+
+.glass-panel {
+  background: var(--glass-panel-bg);
+  backdrop-filter: var(--glass-blur) var(--glass-saturate);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--glass-highlight);
+  opacity: 0.6;
+}
+
+.glass-panel--elevated {
+  box-shadow: var(--glass-shadow-heavy);
+  backdrop-filter: var(--glass-blur-heavy) var(--glass-saturate);
+}
+
+.glass-panel--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-heavy);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.glass-panel--interactive:active {
+  transform: translateY(0);
+}
+
+/* Specular highlight effect */
+.glass-panel--specular::after {
+  content: '';
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Glass pill/chip component */
+.glass-pill {
+  background: var(--glass-panel-bg);
+  backdrop-filter: var(--glass-blur) var(--glass-saturate);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-on-glass);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: all var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+  user-select: none;
+}
+
+.glass-pill:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.glass-pill--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary-hover);
+  color: white;
+}
+
+.glass-pill--secondary {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary-hover);
+  color: white;
+}
+
+/* Glass input components */
+.glass-input {
+  background: var(--glass-panel-bg);
+  backdrop-filter: var(--glass-blur) var(--glass-saturate);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-on-glass);
+  outline: none;
+  transition: all var(--duration-normal) var(--ease-out);
+  width: 100%;
+}
+
+.glass-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.glass-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Glass button */
+.glass-button {
+  background: var(--glass-panel-bg);
+  backdrop-filter: var(--glass-blur) var(--glass-saturate);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-on-glass);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: left var(--duration-slow) var(--ease-out);
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.glass-button:hover::before {
+  left: 100%;
+}
+
+.glass-button:active {
+  transform: translateY(0);
+}
+
+.glass-button--primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+  border-color: var(--color-primary-hover);
+  color: white;
+}
+
+.glass-button--primary:hover {
+  background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+}
+
+/* Gradient overlays */
+.gradient-azure-orchid {
+  background: linear-gradient(135deg, var(--color-azure-500), var(--color-orchid-500));
+}
+
+.gradient-slate-indigo {
+  background: linear-gradient(135deg, var(--color-slate-600), #6366f1);
+}
+
+/* Parallax motion utilities */
+.parallax-slow {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.parallax-normal {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.parallax-fast {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+/* Micro-animations */
+@keyframes glass-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes glass-glow {
+  0%, 100% {
+    box-shadow: var(--glass-shadow);
+  }
+  50% {
+    box-shadow: var(--glass-shadow-heavy);
+  }
+}
+
+@keyframes glass-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.glass-float {
+  animation: glass-float 3s ease-in-out infinite;
+}
+
+.glass-glow {
+  animation: glass-glow 2s ease-in-out infinite alternate;
+}
+
+/* Shimmer effect for loading states */
+.glass-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: glass-shimmer 2s infinite;
+}
+
+/* Caustic pattern overlay (subtle) */
+.glass-caustic {
+  position: relative;
+}
+
+.glass-caustic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  opacity: 0.7;
+}

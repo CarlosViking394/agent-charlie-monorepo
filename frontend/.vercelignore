@@ -1,0 +1,17 @@
+node_modules
+.git
+.env
+.env.local
+.env.production.local
+.env.development.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+db-data/
+n8n-data/
+docker-compose.yml
+setup.sh
+validate-setup.sh
+workflows/
+supabase/
+cloudflare/

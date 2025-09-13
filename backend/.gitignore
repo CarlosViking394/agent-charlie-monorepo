@@ -1,0 +1,51 @@
+# Environment files
+.env
+.env.local
+.env.production
+
+# Database data
+db-data/
+
+# n8n data and keys
+n8n-data/
+n8n/.n8n_encryption_key
+
+# Audio test files
+*.mp3
+*.wav
+
+# Node modules and dependencies
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/

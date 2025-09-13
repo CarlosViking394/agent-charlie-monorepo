@@ -1,0 +1,91 @@
+{
+  "name": "ElevenLabs TTS Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tts",
+        "responseMode": "lastNode"
+      },
+      "id": "WebhookTrigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 200]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "text",
+              "value": "={{$json.body.text}}"
+            },
+            {
+              "name": "voice_id",
+              "value": "={{$json.body.voice_id || $env.ELEVENLABS_DEFAULT_VOICE_ID}}"
+            },
+            {
+              "name": "model_id",
+              "value": "={{$env.ELEVENLABS_MODEL_ID}}"
+            }
+          ]
+        }
+      },
+      "id": "SetInputs",
+      "name": "Set Inputs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [560, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.elevenlabs.io/v1/text-to-speech/{{$json.voice_id}}",
+        "sendBody": true,
+        "jsonParameters": true,
+        "options": {
+          "useQueryString": false,
+          "resolveWithFullResponse": false,
+          "splitIntoItems": false,
+          "response": {
+            "responseFormat": "file",
+            "binaryPropertyName": "data"
+          }
+        },
+        "headerParametersJson": "={\"xi-api-key\":\"{{$env.ELEVENLABS_API_KEY}}\",\"Content-Type\":\"application/json\",\"Accept\":\"audio/mpeg\"}",
+        "bodyParametersJson": "={\"text\":\"{{$json.text}}\",\"model_id\":\"{{$json.model_id}}\",\"voice_settings\":{\"stability\":0.5,\"similarity_boost\":0.8}}"
+      },
+      "id": "HTTPRequestElevenLabs",
+      "name": "HTTP → ElevenLabs TTS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [860, 200]
+    },
+    {
+      "parameters": {
+        "responseFormat": "file",
+        "binaryPropertyName": "data",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "audio/mpeg" },
+              { "name": "Content-Disposition", "value": "inline; filename=\"speech.mp3\"" }
+            ]
+          }
+        }
+      },
+      "id": "Respond",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1160, 200]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [ [ { "node": "Set Inputs", "type": "main", "index": 0 } ] ] },
+    "Set Inputs": { "main": [ [ { "node": "HTTP → ElevenLabs TTS", "type": "main", "index": 0 } ] ] },
+    "HTTP → ElevenLabs TTS": { "main": [ [ { "node": "Respond to Webhook", "type": "main", "index": 0 } ] ] }
+  }
+}

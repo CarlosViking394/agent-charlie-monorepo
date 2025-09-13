@@ -1,0 +1,8 @@
+# Copy to cloudflare/config.yml and replace with your tunnel ID and domain
+tunnel: YOUR_TUNNEL_ID
+credentials-file: /Users/you/.cloudflared/YOUR_TUNNEL_ID.json
+
+ingress:
+  - hostname: n8n.agentcharlie.live
+    service: http://localhost:5678
+  - service: http_status:404

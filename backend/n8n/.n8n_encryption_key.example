@@ -1,0 +1,2 @@
+# Generate a real one with: openssl rand -base64 32 > n8n/.n8n_encryption_key
+PASTE_A_RANDOM_32B_KEY_HERE

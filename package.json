@@ -1,0 +1,77 @@
+{
+  "name": "agent-charlie-monorepo",
+  "version": "1.0.0",
+  "description": "Agent Charlie - AI Agent Marketplace Platform with React frontend and n8n workflow automation",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm run preview",
+    "start:backend": "cd backend && npm run start",
+    "install:all": "npm install && npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && npm install",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm run test",
+    "test:backend": "cd backend && npm run test",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && npm run lint",
+    "typecheck": "npm run typecheck:frontend && npm run typecheck:backend",
+    "typecheck:frontend": "cd frontend && npm run typecheck || true",
+    "typecheck:backend": "cd backend && npm run typecheck",
+    "docker:dev": "./scripts/docker-dev.sh start",
+    "docker:dev:stop": "./scripts/docker-dev.sh stop",
+    "docker:dev:restart": "./scripts/docker-dev.sh restart",
+    "docker:dev:logs": "./scripts/docker-dev.sh logs",
+    "docker:dev:status": "./scripts/docker-dev.sh status",
+    "docker:dev:clean": "./scripts/docker-dev.sh clean",
+    "docker:prod": "./scripts/docker-prod.sh start",
+    "docker:prod:stop": "./scripts/docker-prod.sh stop",
+    "docker:prod:restart": "./scripts/docker-prod.sh restart",
+    "docker:prod:logs": "./scripts/docker-prod.sh logs",
+    "docker:prod:deploy": "./scripts/docker-prod.sh deploy",
+    "docker:prod:backup": "./scripts/docker-prod.sh backup",
+    "docker:up": "cd backend && npm run docker:up",
+    "docker:down": "cd backend && npm run docker:down",
+    "docker:logs": "cd backend && npm run docker:logs",
+    "vercel:deploy": "vercel --prod",
+    "vercel:dev": "vercel dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosViking394/agent-charlie-monorepo.git"
+  },
+  "keywords": [
+    "agent-charlie",
+    "ai-marketplace",
+    "agent-platform",
+    "n8n-workflows", 
+    "react-typescript",
+    "tts-integration",
+    "elevenlabs",
+    "supabase",
+    "vercel",
+    "docker",
+    "monorepo",
+    "cloudflare-tunnel"
+  ],
+  "author": "Carlos Viking",
+  "license": "MIT"
+}
