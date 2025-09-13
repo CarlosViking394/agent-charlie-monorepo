@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Mic, Paperclip, Clock, DollarSign, MapPin, Zap } from 'lucide-react';
+import { Search, Mic, MicOff, Paperclip, Clock, DollarSign, MapPin, Zap } from 'lucide-react';
 import { QuickChip } from '../types';
 import TTSService from '../services/ttsService';
 
@@ -22,6 +22,8 @@ const categories = [
 
 const Home: React.FC = () => {
   const [query, setQuery] = useState('');
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   const navigate = useNavigate();
 
   const handleSearch = (searchQuery?: string) => {
@@ -35,17 +37,49 @@ const Home: React.FC = () => {
     navigate(`/search?filter=${chip.id}`);
   };
 
-  const handleMicrophoneClick = async () => {
-    try {
-      if (query.trim()) {
-        // Speak the current search query
-        await TTSService.speak(`Searching for: ${query}`);
-      } else {
-        // Speak a prompt if no query
-        await TTSService.speak("What kind of help do you need today?");
-      }
-    } catch (error) {
-      console.error('TTS Error:', error);
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+      
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setQuery(transcript);
+        setIsListening(false);
+      };
+      
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+      
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+      
+      setRecognition(recognition);
+    }
+  }, []);
+
+  const handleMicrophoneClick = () => {
+    if (!recognition) {
+      alert('Speech recognition is not supported in your browser. Please try Chrome or Edge.');
+      return;
+    }
+
+    if (isListening) {
+      recognition.stop();
+    } else {
+      recognition.start();
     }
   };
 
@@ -77,23 +111,51 @@ const Home: React.FC = () => {
 
           {/* Main Search Panel */}
           <div className="glass-panel glass-panel--elevated glass-panel--specular p-8 max-w-4xl mx-auto mb-8">
+            {/* Listening Indicator */}
+            {isListening && (
+              <div className="mb-4 p-4 bg-azure-50 border border-azure-200 rounded-lg flex items-center gap-3">
+                <div className="flex space-x-1">
+                  <div className="w-2 h-2 bg-azure-500 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-azure-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-azure-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                </div>
+                <span className="text-azure-700 font-medium">Listening... Speak now!</span>
+                <button 
+                  onClick={() => recognition?.stop()}
+                  className="ml-auto text-azure-600 hover:text-azure-800 font-medium text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
             <div className="relative">
               <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-slate-400" />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="What kind of help do you need today?"
-                className="glass-input pl-16 pr-24 py-6 text-lg"
+                placeholder={isListening ? "🎤 Listening for your voice..." : "What kind of help do you need today?"}
+                className={`glass-input pl-16 pr-24 py-6 text-lg transition-all duration-300 ${
+                  isListening ? 'ring-2 ring-azure-400 border-azure-300' : ''
+                }`}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                readOnly={isListening}
               />
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
                 <button 
                   onClick={handleMicrophoneClick}
-                  className="glass-button p-3 hover:scale-105 transition-transform"
-                  title="Speak your search query"
+                  className={`glass-button p-3 hover:scale-105 transition-all duration-300 ${
+                    isListening 
+                      ? 'glass-button--primary animate-pulse ring-2 ring-azure-400' 
+                      : ''
+                  }`}
+                  title={isListening ? "Stop recording" : "Speak your search query"}
                 >
-                  <Mic className="w-5 h-5" />
+                  {isListening ? (
+                    <MicOff className="w-5 h-5 text-white" />
+                  ) : (
+                    <Mic className="w-5 h-5" />
+                  )}
                 </button>
                 <button className="glass-button p-3 hover:scale-105 transition-transform">
                   <Paperclip className="w-5 h-5" />
