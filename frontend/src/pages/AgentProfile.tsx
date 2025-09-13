@@ -3,11 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import { Star, Clock, CheckCircle, Shield, MapPin, MessageCircle, Calendar, Bookmark, Share, Phone, Video, MoreHorizontal } from 'lucide-react';
 import { Agent } from '../types';
 import { mockAgents } from '../utils/mockData';
+import AgentChat from '../components/AgentChat';
 
 const AgentProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [agent, setAgent] = useState<Agent | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'reviews' | 'portfolio' | 'availability'>('overview');
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const foundAgent = mockAgents.find(a => a.id === id);
@@ -382,7 +384,10 @@ const AgentProfile: React.FC = () => {
               </div>
 
               <div className="flex gap-3">
-                <button className="glass-button--primary px-6 py-3 font-semibold">
+                <button
+                  onClick={() => setShowChat(true)}
+                  className="glass-button--primary px-6 py-3 font-semibold"
+                >
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Message Now
                 </button>
@@ -437,7 +442,10 @@ const AgentProfile: React.FC = () => {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="glass-button p-2">
+                <button
+                  onClick={() => setShowChat(true)}
+                  className="glass-button p-2"
+                >
                   <MessageCircle className="w-4 h-4" />
                 </button>
                 <button className="glass-button--primary px-6 py-2 font-semibold">
@@ -447,6 +455,15 @@ const AgentProfile: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Chat Modal */}
+        {showChat && (
+          <AgentChat
+            agentId={agent.id}
+            agentName={agent.name}
+            onClose={() => setShowChat(false)}
+          />
+        )}
       </div>
     </div>
   );

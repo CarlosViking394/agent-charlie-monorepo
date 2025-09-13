@@ -1,35 +1,12 @@
-export interface Agent {
-  id: string;
-  name: string;
-  category: string;
-  rating: number;
-  reviewCount: number;
-  responseTime: string;
-  successRate: number;
-  pricing: {
-    min: number;
-    max: number;
-    currency: string;
-  };
-  avatar: string;
-  verified: boolean;
-  insured: boolean;
-  available: boolean;
-  specialties: string[];
-  location: {
-    city: string;
-    state: string;
-    remote: boolean;
-  };
-  description: string;
-}
+// Re-export all types from organized modules
+export * from './core';
+export * from './agent';
+export * from './ui';
+export * from './booking';
 
-export interface QuickChip {
-  id: string;
-  label: string;
-  icon?: string;
-  category?: string;
-}
+// Legacy interfaces for backwards compatibility
+import { Agent } from './agent';
+import { QuickChip } from './ui';
 
 export interface FilterOptions {
   priceRange: [number, number];
