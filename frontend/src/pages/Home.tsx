@@ -113,10 +113,10 @@ const Home: React.FC = () => {
                 <span className="text-sm font-medium">24/7 Agent Network Online</span>
               </div>
 
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 bg-gradient-to-r from-slate-900 via-azure-700 to-orchid-600 bg-clip-text text-transparent leading-none">
-                Your calm,<br />
-                capable<br />
-                companion
+              <h1 className="hero-text gradient-text text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-none stagger-children">
+                <span>Your calm,</span><br />
+                <span>capable</span><br />
+                <span>companion</span>
               </h1>
 
               <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-12">
@@ -125,19 +125,19 @@ const Home: React.FC = () => {
             </div>
 
             {/* Main Search Panel */}
-            <div className="glass-panel glass-panel--elevated glass-panel--specular p-10 max-w-5xl mx-auto mb-12 shadow-2xl">
+            <div className="glass-panel glass-panel--elevated glass-panel--specular interactive-element p-10 max-w-5xl mx-auto mb-12 depth-4">
             {/* Listening Indicator */}
             {isListening && (
-              <div className="mb-4 p-4 bg-azure-50 border border-azure-200 rounded-lg flex items-center gap-3">
+              <div className="listening-indicator mb-4 p-4 bg-azure-50 border border-azure-200 rounded-lg flex items-center gap-3 text-reveal">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-azure-500 rounded-full animate-pulse"></div>
                   <div className="w-2 h-2 bg-azure-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
                   <div className="w-2 h-2 bg-azure-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
                 </div>
                 <span className="text-azure-700 font-medium">Listening... Speak now!</span>
-                <button 
+                <button
                   onClick={() => recognition?.stop()}
-                  className="ml-auto text-azure-600 hover:text-azure-800 font-medium text-sm"
+                  className="ml-auto text-azure-600 hover:text-azure-800 font-medium text-sm glass-button"
                 >
                   Cancel
                 </button>
@@ -159,9 +159,9 @@ const Home: React.FC = () => {
                 <div className="absolute right-6 top-1/2 transform -translate-y-1/2 flex items-center gap-3">
                   <button
                     onClick={handleMicrophoneClick}
-                    className={`glass-button p-4 hover:scale-105 transition-all duration-300 ${
+                    className={`mic-button glass-button p-4 ${
                       isListening
-                        ? 'glass-button--primary animate-pulse ring-2 ring-azure-400'
+                        ? 'glass-button--primary is-listening ring-2 ring-azure-400'
                         : ''
                     }`}
                     title={isListening ? "Stop recording" : "Speak your search query"}
@@ -185,12 +185,13 @@ const Home: React.FC = () => {
               </div>
 
               {/* Quick Chips */}
-              <div className="flex flex-wrap justify-center gap-4 mt-8">
-                {quickChips.map((chip) => (
+              <div className="flex flex-wrap justify-center gap-4 mt-8 stagger-children">
+                {quickChips.map((chip, index) => (
                   <button
                     key={chip.id}
                     onClick={() => handleChipClick(chip)}
-                    className="glass-pill hover:glass-pill--active text-base px-6 py-3"
+                    className="glass-pill interactive-element text-base px-6 py-3"
+                    style={{ animationDelay: `${index * 100 + 600}ms` }}
                   >
                     {chip.icon && renderChipIcon(chip.icon)}
                     {chip.label}
@@ -215,7 +216,7 @@ const Home: React.FC = () => {
             <div className="inline-flex items-center gap-2 glass-pill glass-pill--secondary mb-6 px-4 py-2">
               <span className="text-sm font-medium">6 Categories Available</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-azure-700 to-orchid-600 bg-clip-text text-transparent">
+            <h2 className="visual-hierarchy gradient-text text-5xl md:text-6xl font-bold mb-6">
               Explore Categories
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
@@ -228,16 +229,16 @@ const Home: React.FC = () => {
               <button
                 key={category.id}
                 onClick={() => navigate(`/search?category=${category.id}`)}
-                className="glass-panel glass-panel--interactive p-10 text-left group hover:scale-105 hover:shadow-2xl transition-all duration-500 relative overflow-hidden"
+                className="category-card glass-panel glass-panel--interactive p-10 text-left group relative overflow-hidden depth-2"
                 style={{
-                  animationDelay: `${index * 100}ms`
+                  animationDelay: `${index * 150}ms`
                 }}
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-azure-100 to-orchid-100 rounded-full -translate-y-16 translate-x-16 opacity-20 group-hover:opacity-30 transition-opacity"></div>
 
                 <div className="flex flex-col gap-6 relative z-10">
                   <div className="flex items-center gap-5">
-                    <div className="text-5xl transform group-hover:scale-110 transition-transform duration-300">
+                    <div className="category-icon text-5xl">
                       {category.icon}
                     </div>
                     <div>
@@ -277,7 +278,7 @@ const Home: React.FC = () => {
             <div className="inline-flex items-center gap-2 glass-pill glass-pill--secondary mb-6 px-4 py-2">
               <span className="text-sm font-medium">Recently Active</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-azure-700 to-orchid-600 bg-clip-text text-transparent">
+            <h2 className="visual-hierarchy gradient-text text-4xl md:text-5xl font-bold mb-6">
               Recent Searches
             </h2>
             <p className="text-lg text-slate-600 max-w-xl mx-auto">
@@ -285,8 +286,8 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            <div className="glass-panel glass-panel--interactive p-8 hover:glass-panel--elevated hover:scale-105 transition-all duration-300 cursor-pointer group">
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto stagger-children">
+            <div className="glass-panel glass-panel--interactive interactive-element p-8 cursor-pointer group depth-1">
               <div className="flex items-start justify-between mb-4">
                 <h4 className="font-bold text-xl group-hover:text-primary transition-colors">Emergency plumber needed</h4>
                 <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full">2 hours ago</span>
@@ -300,7 +301,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="glass-panel glass-panel--interactive p-8 hover:glass-panel--elevated hover:scale-105 transition-all duration-300 cursor-pointer group">
+            <div className="glass-panel glass-panel--interactive interactive-element p-8 cursor-pointer group depth-1">
               <div className="flex items-start justify-between mb-4">
                 <h4 className="font-bold text-xl group-hover:text-primary transition-colors">Math tutor for SAT prep</h4>
                 <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full">1 day ago</span>

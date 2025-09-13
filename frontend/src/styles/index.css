@@ -1,5 +1,6 @@
 @import './tokens.css';
 @import './liquid-glass.css';
+@import './apple-inspired.css';
 
 /* Reset and base styles */
 *,
@@ -28,6 +29,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Create depth with layered background */

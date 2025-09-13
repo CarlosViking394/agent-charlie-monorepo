@@ -134,9 +134,10 @@
   --space-20: 5rem;
   --space-24: 6rem;
   
-  /* Typography */
-  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', monospace;
+  /* Typography - Apple-inspired system fonts */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', 'Menlo', monospace;
+  --font-family-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
   
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -165,14 +166,24 @@
   --z-popover: 1060;
   --z-tooltip: 1070;
   
-  /* Animation */
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 350ms;
-  
-  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Animation - Apple-inspired timing */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
+
+  /* Apple's signature easing curves */
+  --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-apple-in: cubic-bezier(0.42, 0, 1, 1);
+  --ease-apple-out: cubic-bezier(0, 0, 0.58, 1);
+  --ease-apple-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Legacy aliases */
+  --ease-out: var(--ease-apple-out);
+  --ease-in-out: var(--ease-apple);
+  --ease-bounce: var(--ease-apple-bounce);
 }
 
 /* Dark theme overrides */
