@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Mic, Paperclip, Clock, DollarSign, MapPin, Zap } from 'lucide-react';
 import { QuickChip } from '../types';
+import TTSService from '../services/ttsService';
 
 const quickChips: QuickChip[] = [
   { id: 'emergency', label: 'Emergency now', icon: 'zap' },
@@ -32,6 +33,20 @@ const Home: React.FC = () => {
 
   const handleChipClick = (chip: QuickChip) => {
     navigate(`/search?filter=${chip.id}`);
+  };
+
+  const handleMicrophoneClick = async () => {
+    try {
+      if (query.trim()) {
+        // Speak the current search query
+        await TTSService.speak(`Searching for: ${query}`);
+      } else {
+        // Speak a prompt if no query
+        await TTSService.speak("What kind of help do you need today?");
+      }
+    } catch (error) {
+      console.error('TTS Error:', error);
+    }
   };
 
   const renderChipIcon = (iconName: string) => {
@@ -73,7 +88,11 @@ const Home: React.FC = () => {
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               />
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
-                <button className="glass-button p-3 hover:scale-105 transition-transform">
+                <button 
+                  onClick={handleMicrophoneClick}
+                  className="glass-button p-3 hover:scale-105 transition-transform"
+                  title="Speak your search query"
+                >
                   <Mic className="w-5 h-5" />
                 </button>
                 <button className="glass-button p-3 hover:scale-105 transition-transform">

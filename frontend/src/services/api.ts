@@ -92,7 +92,7 @@ export class N8NService {
 
   // Text-to-Speech webhook
   static async textToSpeech(text: string, voiceId?: string) {
-    return this.callWebhook('tts', { text, voice_id: voiceId });
+    return this.callWebhook('tts2', { text, voice_id: voiceId });
   }
 
   // Agent search workflow

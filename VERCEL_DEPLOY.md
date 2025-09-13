@@ -83,7 +83,7 @@ curl -I https://agent-charlie.vercel.app/
 curl -I https://n8n.agentcharlie.live/
 
 # TTS Webhook
-curl -X POST https://n8n.agentcharlie.live/webhook/tts \
+curl -X POST https://n8n.agentcharlie.live/webhook/tts2 \
   -H "Content-Type: application/json" \
   -d '{"text": "Hello world test"}'
 ```

@@ -189,7 +189,7 @@ cd frontend && npm test
 curl http://localhost:5678/
 
 # TTS webhook test
-curl -X POST http://localhost:5678/webhook/tts \
+curl -X POST http://localhost:5678/webhook/tts2 \
   -H "Content-Type: application/json" \
   -d '{"text": "Hello world"}'
 ```
@@ -215,7 +215,7 @@ For production webhook access:
 
 ### TTS Endpoint
 ```bash
-POST /webhook/tts
+POST /webhook/tts2
 Content-Type: application/json
 
 {
