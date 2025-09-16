@@ -363,3 +363,4 @@ router.get('/sessions', authMiddleware.requireAuth, async (req: AuthenticatedReq
 });
 
 export default router;
+

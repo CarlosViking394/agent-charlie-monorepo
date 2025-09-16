@@ -366,3 +366,4 @@ export class AuthService {
     return sessions?.map(session => this.mapDatabaseSessionToSession(session)) || [];
   }
 }
+

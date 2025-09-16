@@ -107,3 +107,4 @@ export abstract class BaseAgent {
     console.log(`[${level.toUpperCase()}] ${this.identifier.name}: ${message}`, data || '');
   }
 }
+

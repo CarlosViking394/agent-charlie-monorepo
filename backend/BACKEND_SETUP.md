@@ -272,3 +272,4 @@ The backend includes built-in monitoring:
 - Database issues: Check Supabase dashboard
 - Authentication: Test endpoints individually
 - Agent behavior: Enable debug mode in .env
+
