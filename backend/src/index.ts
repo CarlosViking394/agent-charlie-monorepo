@@ -1,112 +1,95 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
 import { createServer } from 'http';
+import dotenv from 'dotenv';
+import app from './app';
 
 // Load environment variables
 dotenv.config();
 
-const app = express();
 const server = createServer(app);
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Validate required environment variables
+const requiredEnvVars = [
+  'SUPABASE_URL',
+  'SUPABASE_SERVICE_ROLE',
+  'JWT_SECRET',
+  'OPENAI_API_KEY'
+];
 
-// Health check endpoint
-app.get('/health', (_req, res) => {
-  res.json({ 
-    status: 'healthy', 
-    timestamp: new Date().toISOString(),
-    service: 'agent-charlie-backend'
-  });
-});
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
 
-// API routes
-app.get('/api/status', (_req, res) => {
-  res.json({ 
-    message: 'Agent Charlie Backend API is running',
-    version: '1.0.0',
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
-// API endpoint for agent interactions
-app.post('/api/agents/query', async (req, res) => {
-  try {
-    const { query, context } = req.body;
-    
-    // This is where you would integrate with your n8n workflows
-    // For now, return a mock response
-    res.json({
-      response: `Processed query: ${query}`,
-      context: context || {},
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error processing agent query:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Webhook endpoint for n8n integration
-app.post('/webhook/n8n/:workflowId', async (req, res) => {
-  try {
-    const { workflowId } = req.params;
-    const payload = req.body;
-    
-    console.log(`Received webhook for workflow ${workflowId}:`, payload);
-    
-    // Forward to n8n or process as needed
-    res.json({ 
-      success: true, 
-      workflowId,
-      message: 'Webhook received successfully'
-    });
-  } catch (error) {
-    console.error('Webhook error:', error);
-    res.status(500).json({ error: 'Webhook processing failed' });
-  }
-});
-
-// Error handling middleware
-app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error('Error:', err);
-  res.status(500).json({ error: 'Something went wrong!' });
-});
-
-// 404 handler
-app.use('*', (_req, res) => {
-  res.status(404).json({ error: 'Route not found' });
-});
+if (missingEnvVars.length > 0) {
+  console.error('❌ Missing required environment variables:', missingEnvVars);
+  console.error('📋 Please check your .env file and ensure all required variables are set');
+  process.exit(1);
+}
 
 // Start server
 server.listen(PORT, () => {
-  console.log(`🚀 Agent Charlie Backend running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
-  console.log(`🔗 API base: http://localhost:${PORT}/api`);
-  console.log(`🪝 Webhooks: http://localhost:${PORT}/webhook`);
+  console.log('🤖 ═══════════════════════════════════════════════');
+  console.log('🚀 Agent Charlie Backend v2.0 - Multi-Agent System');
+  console.log('🤖 ═══════════════════════════════════════════════');
+  console.log(`📍 Server running on port ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log('');
+  console.log('📊 Endpoints:');
+  console.log(`   Health check: http://localhost:${PORT}/health`);
+  console.log(`   API status:   http://localhost:${PORT}/api/status`);
+  console.log(`   Auth:         http://localhost:${PORT}/auth`);
+  console.log(`   Agents:       http://localhost:${PORT}/api/agents`);
+  console.log(`   Webhooks:     http://localhost:${PORT}/webhook`);
+  console.log('');
+  console.log('🤖 Active Agents:');
+  console.log('   ✅ Charlie (Root Orchestrator)');
+  console.log('   ✅ Restaurant Agent');
+  console.log('   ✅ Banking Agent');
+  console.log('   ✅ Travel Agent');
+  console.log('   ✅ Healthcare Agent');
+  console.log('   ✅ Entertainment Agent');
+  console.log('');
+  console.log('🔐 Authentication:');
+  console.log('   ✅ Google OAuth');
+  console.log('   ✅ GitHub OAuth');
+  console.log('   ✅ Microsoft OAuth');
+  console.log('   ✅ Apple OAuth');
+  console.log('   ✅ Email/Password');
+  console.log('');
+  console.log('🔗 Integrations:');
+  console.log('   ✅ Supabase Database');
+  console.log('   ✅ OpenAI GPT-4');
+  console.log('   ✅ n8n Workflows');
+  console.log('   ✅ ElevenLabs TTS');
+  console.log('🤖 ═══════════════════════════════════════════════');
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('🛑 SIGTERM received, shutting down gracefully');
+const gracefulShutdown = (signal: string) => {
+  console.log(`\n🛑 ${signal} received, shutting down gracefully...`);
+  
   server.close(() => {
-    console.log('✅ Process terminated');
+    console.log('🔌 HTTP server closed');
+    console.log('🤖 Agent Charlie backend stopped');
+    console.log('✅ Graceful shutdown complete');
     process.exit(0);
   });
+
+  // Force close after 30 seconds
+  setTimeout(() => {
+    console.error('❌ Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 30000);
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  gracefulShutdown('UNCAUGHT_EXCEPTION');
 });
 
-process.on('SIGINT', () => {
-  console.log('🛑 SIGINT received, shutting down gracefully');
-  server.close(() => {
-    console.log('✅ Process terminated');
-    process.exit(0);
-  });
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  gracefulShutdown('UNHANDLED_REJECTION');
 });
